@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - OTEC</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+Organization Type Emphasis Chart <br>
+<div id="chart"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+  // Define the emphasis percentages for each dimension and organization type
+  var data = {
+    'Startups': { 'Innovation-Driven Strategic Planning': 20, 'Digital Innovation and Process Efficiency': 20, 'Workforce Engagement and Safety': 10, 'Results-Driven Performance and Sustainability': 10, 'Leadership and Ethical Governance': 10, 'Regulatory Compliance and Governance': 10, 'Customer Focus and Value Creation': 10, 'Financial Performance and Management': 10 },
+    'Manufacturing Companies': { 'Innovation-Driven Strategic Planning': 10, 'Digital Innovation and Process Efficiency': 10, 'Workforce Engagement and Safety': 20, 'Results-Driven Performance and Sustainability': 20, 'Leadership and Ethical Governance': 10, 'Regulatory Compliance and Governance': 10, 'Customer Focus and Value Creation': 10, 'Financial Performance and Management': 10 },
+    'Government Agencies': { 'Innovation-Driven Strategic Planning': 10, 'Digital Innovation and Process Efficiency': 10, 'Workforce Engagement and Safety': 10, 'Results-Driven Performance and Sustainability': 10, 'Leadership and Ethical Governance': 20, 'Regulatory Compliance and Governance': 20, 'Customer Focus and Value Creation': 10, 'Financial Performance and Management': 10 },
+    'Healthcare Providers': { 'Innovation-Driven Strategic Planning': 10, 'Digital Innovation and Process Efficiency': 10, 'Workforce Engagement and Safety': 10, 'Results-Driven Performance and Sustainability': 10, 'Leadership and Ethical Governance': 10, 'Regulatory Compliance and Governance': 10, 'Customer Focus and Value Creation': 20, 'Financial Performance and Management': 20 },
+    'Educational Institutions': { 'Innovation-Driven Strategic Planning': 10, 'Digital Innovation and Process Efficiency': 10, 'Workforce Engagement and Safety': 10, 'Results-Driven Performance and Sustainability': 10, 'Leadership and Ethical Governance': 20, 'Regulatory Compliance and Governance': 10, 'Customer Focus and Value Creation': 20, 'Financial Performance and Management': 10 },
+    'Financial Institutions': { 'Innovation-Driven Strategic Planning': 10, 'Digital Innovation and Process Efficiency': 10, 'Workforce Engagement and Safety': 10, 'Results-Driven Performance and Sustainability': 10, 'Leadership and Ethical Governance': 10, 'Regulatory Compliance and Governance': 20, 'Customer Focus and Value Creation': 10, 'Financial Performance and Management': 20 },
+    'Nonprofit Organizations': { 'Innovation-Driven Strategic Planning': 10, 'Digital Innovation and Process Efficiency': 10, 'Workforce Engagement and Safety': 10, 'Results-Driven Performance and Sustainability': 20, 'Leadership and Ethical Governance': 10, 'Regulatory Compliance and Governance': 10, 'Customer Focus and Value Creation': 10, 'Financial Performance and Management': 20 },
+    'Public-Private Partnerships': { 'Innovation-Driven Strategic Planning': 20, 'Digital Innovation and Process Efficiency': 20, 'Workforce Engagement and Safety': 10, 'Results-Driven Performance and Sustainability': 10, 'Leadership and Ethical Governance': 10, 'Regulatory Compliance and Governance': 10, 'Customer Focus and Value Creation': 10, 'Financial Performance and Management': 10 }
+  };
+
+  // Normalize the emphasis percentages for each organization type
+  Object.keys(data).forEach(orgType => {
+    var sum = Object.values(data[orgType]).reduce((acc, val) => acc + val, 0);
+    Object.keys(data[orgType]).forEach(dim => {
+      data[orgType][dim] = Math.round((data[orgType][dim] / sum) * 100);
+    });
+  });
+
+  // Prepare series data for ApexCharts
+  var seriesData = Object.keys(data[Object.keys(data)[0]]).map(dim => ({
+    name: dim,
+    data: Object.keys(data).map(orgType => data[orgType][dim])
+  }));
+
+  var options = {
+    chart: {
+      type: 'bar',
+      height: 350,
+      stacked: true,
+      toolbar: {
+        show: true,
+      },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+      },
+    },
+    series: seriesData,
+    xaxis: {
+      categories: Object.keys(data),
+    },
+    legend: {
+      position: 'top',
+    },
+    fill: {
+      opacity: 1,
+    },
+  }
+
+  var chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
+</script>
+<!-- partial -->
+  
+</body>
+</html>
